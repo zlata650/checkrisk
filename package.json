@@ -1,0 +1,17 @@
+{
+  "name": "checkrisk-proxy",
+  "version": "1.0.0",
+  "description": "Proxy server to modify mammogene content",
+  "main": "proxy-server.js",
+  "scripts": {
+    "start": "node simple-proxy.js",
+    "dev": "node simple-proxy.js",
+    "playwright": "node proxy-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "node-fetch": "^2.7.0",
+    "playwright": "^1.40.0"
+  }
+}

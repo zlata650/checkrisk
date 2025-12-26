@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="title">CheckRisk – Assistant IA Évaluation Risque Cancer du Sein</title>
+    <style>
+      :root {
+        --pink-50: #fdf2f8;
+        --pink-100: #fce7f3;
+        --pink-200: #fbcfe8;
+        --pink-300: #f9a8d4;
+        --pink-400: #f472b6;
+        --pink-500: #ec4899;
+        --pink-600: #db2777;
+        --pink-700: #be185d;
+        --rose-50: #fff1f2;
+        --rose-100: #ffe4e6;
+        --rose-200: #fecdd3;
+        --rose-300: #fda4af;
+        --bg: #fef7f7;
+        --bg-alt: #ffffff;
+        --accent: #ec4899;
+        --accent-soft: #fce7f3;
+        --text-main: #1f2937;
+        --text-muted: #6b7280;
+        --border-subtle: #fce7f3;
+        --danger: #be185d;
+        --radius-lg: 20px;
+        --radius-md: 16px;
+        --radius-sm: 12px;
+        --shadow-soft: 0 4px 20px rgba(236, 72, 153, 0.08);
+        --shadow-hover: 0 8px 30px rgba(236, 72, 153, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        background: linear-gradient(135deg, #fef7f7 0%, #fff1f2 50%, #fdf2f8 100%);
+        color: var(--text-main);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .shell {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 24px 60px;
+      }
+
+      /* HERO */
+      .hero {
+        text-align: center;
+        padding: 60px 0 80px;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 20px;
+        border-radius: 50px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 24px;
+      }
+
+      .hero-badge-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .hero-title {
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin: 0 0 20px;
+        color: var(--text-main);
+      }
+
+      .hero-subtitle {
+        font-size: 20px;
+        line-height: 1.5;
+        color: var(--text-muted);
+        max-width: 700px;
+        margin: 0 auto 32px;
+        font-weight: 400;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        border-radius: 50px;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+        box-shadow: 0 4px 14px rgba(236, 72, 153, 0.3);
+      }
+
+      .btn-primary:hover {
+        background: var(--pink-600);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
+      }
+
+      .btn-secondary {
+        background: white;
+        color: var(--accent);
+        border: 2px solid var(--accent-soft);
+      }
+
+      .btn-secondary:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent);
+      }
+
+      /* Sections */
+      section {
+        padding: 60px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .section-title {
+        font-size: 36px;
+        font-weight: 700;
+        margin: 0 0 16px;
+        color: var(--text-main);
+        letter-spacing: -0.02em;
+      }
+
+      .section-lead {
+        font-size: 18px;
+        color: var(--text-muted);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* Cards */
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 40px;
+      }
+
+      .card {
+        background: white;
+        border-radius: var(--radius-md);
+        padding: 32px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-subtle);
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: var(--accent-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .card-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0 0 12px;
+        color: var(--text-main);
+      }
+
+      .card-text {
+        font-size: 15px;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      /* Steps */
+      .steps {
+        display: grid;
+        gap: 24px;
+        margin-top: 40px;
+      }
+
+      .step {
+        display: flex;
+        gap: 24px;
+        background: white;
+        border-radius: var(--radius-md);
+        padding: 32px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-subtle);
+      }
+
+      .step-number {
+        flex-shrink: 0;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .step-content h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0 0 8px;
+        color: var(--text-main);
+      }
+
+      .step-content p {
+        font-size: 15px;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      /* Objectives */
+      .objectives {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 48px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-subtle);
+        margin-top: 40px;
+      }
+
+      .objectives-list {
+        list-style: none;
+        display: grid;
+        gap: 20px;
+        margin-top: 32px;
+      }
+
+      .objectives-list li {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .objectives-list li::before {
+        content: "✓";
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 16px;
+      }
+
+      .objectives-list li strong {
+        color: var(--text-main);
+        font-weight: 600;
+      }
+
+      /* FAQ */
+      .faq {
+        margin-top: 40px;
+      }
+
+      .faq-item {
+        background: white;
+        border-radius: var(--radius-md);
+        padding: 24px 32px;
+        margin-bottom: 16px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-subtle);
+      }
+
+      .faq-question {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-main);
+        margin: 0 0 12px;
+      }
+
+      .faq-answer {
+        font-size: 15px;
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      /* Disclaimer */
+      .disclaimer {
+        background: var(--rose-50);
+        border: 2px solid var(--rose-200);
+        border-radius: var(--radius-md);
+        padding: 24px;
+        margin-top: 40px;
+      }
+
+      .disclaimer-label {
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--danger);
+        margin: 0 0 12px;
+      }
+
+      .disclaimer-text {
+        font-size: 14px;
+        color: var(--pink-700);
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      /* Footer */
+      .footer {
+        margin-top: auto;
+        background: white;
+        border-top: 1px solid var(--border-subtle);
+        padding: 40px 0;
+      }
+
+      .footer-inner {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 24px;
+        text-align: center;
+      }
+
+      .footer-logo {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+
+      .footer-tagline {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-bottom: 24px;
+      }
+
+      .footer-nav {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 32px;
+      }
+
+      .footer-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.2s;
+      }
+
+      .footer-link:hover {
+        color: var(--accent);
+      }
+
+      .footer-legal {
+        padding-top: 32px;
+        border-top: 1px solid var(--border-subtle);
+        font-size: 13px;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .footer-contact {
+        margin-top: 24px;
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      .footer-contact a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .footer-contact a:hover {
+        text-decoration: underline;
+      }
+
+      /* Language Selector */
+      .lang-selector {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 1000;
+        display: flex;
+        gap: 8px;
+        background: white;
+        padding: 8px;
+        border-radius: 50px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-subtle);
+      }
+
+      .lang-btn {
+        padding: 8px 16px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+      }
+
+      .lang-btn:hover {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .lang-btn.active {
+        background: var(--accent);
+        color: white;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .shell {
+          padding: 24px 16px 40px;
+        }
+
+        .hero {
+          padding: 40px 0 60px;
+        }
+
+        .hero-title {
+          font-size: 36px;
+        }
+
+        .hero-subtitle {
+          font-size: 18px;
+        }
+
+        .section-title {
+          font-size: 28px;
+        }
+
+        .card-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .step {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .objectives {
+          padding: 32px 24px;
+        }
+
+        .faq-item {
+          padding: 20px 24px;
+        }
+
+        .lang-selector {
+          top: 16px;
+          right: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Language Selector -->
+    <div class="lang-selector">
+      <button class="lang-btn active" data-lang="fr">FR</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <div class="page">
+      <main class="shell">
+        <!-- HERO -->
+        <header class="hero">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            <span data-i18n="heroBadge">Assistant IA évaluation risque cancer du sein</span>
+          </div>
+          <h1 class="hero-title">CheckRisk</h1>
+          <p class="hero-subtitle" data-i18n="heroSubtitle">
+            Assistant intelligent pour la collecte structurée d'informations cliniques, 
+            intégré avec CanRisk pour la génération automatique de fichiers et le calcul 
+            de risque. Connexion avec votre compte CanRisk requise.
+          </p>
+          <div class="hero-actions">
+            <a href="#demo" class="btn btn-primary" data-i18n="btnDemo">Tester la démo</a>
+            <a href="#contact" class="btn btn-secondary" data-i18n="btnRequestDemo">Demander une démo</a>
+          </div>
+        </header>
+
+        <!-- OBJECTIVES -->
+        <section id="objectives">
+          <div class="section-header">
+            <h2 class="section-title" data-i18n="objectivesTitle">Objectifs du projet</h2>
+            <p class="section-lead" data-i18n="objectivesLead">
+              Développer un assistant intelligent basé sur MedGemma-27B pour optimiser 
+              l'évaluation du risque de cancer du sein
+            </p>
+          </div>
+          <div class="objectives">
+            <ul class="objectives-list">
+              <li>
+                <div>
+                  <strong data-i18n="obj1Title">Collecte structurée</strong> – <span data-i18n="obj1Text">Questions guidées pour recueillir 
+                  les antécédents personnels et familiaux nécessaires à l'évaluation du risque</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <strong data-i18n="obj2Title">Explications contextuelles</strong> – <span data-i18n="obj2Text">Clarification des concepts médicaux 
+                  (péri-ménopause, hyperplasie atypique, etc.) pour faciliter la compréhension</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <strong data-i18n="obj3Title">Génération de pedigree</strong> – <span data-i18n="obj3Text">Parser les antécédents familiaux et 
+                  générer un arbre généalogique structuré sur 3-4 générations</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <strong data-i18n="obj4Title">Export CanRisk/IBIS</strong> – <span data-i18n="obj4Text">Génération automatique de fichiers texte 
+                  formatés pour intégration dans les outils de calcul de risque (BOADICEA v6, Tyrer-Cuzick)</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <strong data-i18n="obj5Title">Support médecin</strong> – <span data-i18n="obj5Text">Recommandations de risk management basées sur 
+                  les scores (surveillance, tests génétiques, chimioprévention)</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <strong data-i18n="obj6Title">Explications génétiques</strong> – <span data-i18n="obj6Text">Interprétation des résultats de tests 
+                  génétiques (gènes pénétrance, PRS, VUS) pour les patientes et conseillers génétiques</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- SOLUTION -->
+        <section id="solution">
+          <div class="section-header">
+            <h2 class="section-title" data-i18n="solutionTitle">Comment ça fonctionne</h2>
+            <p class="section-lead" data-i18n="solutionLead">
+              Workflow en 5 phases pour une évaluation complète du risque
+            </p>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3 data-i18n="step1Title">Collecte des informations patiente</h3>
+                <p data-i18n="step1Text">
+                  L'assistant IA guide la collecte des données personnelles (âge, ménarche, 
+                  ménopause, grossesses, biopsies, IMC) avec des explications contextuelles 
+                  des concepts médicaux. Génération d'un JSON structuré validé.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3 data-i18n="step2Title">Antécédents familiaux et pedigree</h3>
+                <p data-i18n="step2Text">
+                  Collecte systématique des antécédents familiaux sur 3-4 générations 
+                  (cancers, âges, liens de parenté) avec validation de cohérence. 
+                  Génération automatique d'un pedigree structuré.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3 data-i18n="step3Title">Export CanRisk/IBIS automatique</h3>
+                <p data-i18n="step3Text">
+                  Connexion à votre compte CanRisk pour génération automatique de fichiers d'export 
+                  au format BOADICEA v6 (CanRisk) ou CSV Tyrer-Cuzick (IBIS). Les fichiers sont 
+                  directement disponibles dans votre compte et prêts pour les calculs de risque.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h3 data-i18n="step4Title">Support risk management</h3>
+                <p data-i18n="step4Text">
+                  Recommandations personnalisées basées sur les guidelines (NCCN, ESMO, ACOG) : 
+                  catégorisation du risque, protocoles de surveillance (mammo/IRM), indications 
+                  de tests génétiques, chimioprévention.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">5</div>
+              <div class="step-content">
+                <h3 data-i18n="step5Title">Explications génétiques</h3>
+                <p data-i18n="step5Text">
+                  Interprétation accessible des résultats de tests génétiques : pénétrance 
+                  (BRCA1/2, gènes modérés), types de variants (pathogène, VUS, bénin), PRS, 
+                  implications familiales.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- BENEFITS -->
+        <section id="benefits">
+          <div class="section-header">
+            <h2 class="section-title" data-i18n="benefitsTitle">Pour qui ?</h2>
+            <p class="section-lead" data-i18n="benefitsLead">
+              Conçu pour optimiser les workflows des professionnels de santé
+            </p>
+          </div>
+          <div class="card-grid">
+            <div class="card">
+              <div class="card-icon">👩‍⚕️</div>
+              <h3 class="card-title" data-i18n="card1Title">Gynécologues & Oncologues</h3>
+              <p class="card-text" data-i18n="card1Text">
+                Réduction de 40% du temps de collecte, recommandations basées sur les guidelines, 
+                export direct CanRisk/IBIS via votre compte CanRisk pour intégration immédiate.
+              </p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🧬</div>
+              <h3 class="card-title" data-i18n="card2Title">Conseillers génétiques</h3>
+              <p class="card-text" data-i18n="card2Text">
+                Pedigree structuré automatique, explications génétiques accessibles, 
+                base de connaissances RAG biomédicale contextuelle.
+              </p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🔬</div>
+              <h3 class="card-title" data-i18n="card3Title">Chercheurs & Programmes</h3>
+              <p class="card-text" data-i18n="card3Text">
+                Collecte standardisée et auditable, validation continue avec métriques médicales, 
+                architecture scalable pour intégration EHRs.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq">
+          <div class="section-header">
+            <h2 class="section-title" data-i18n="faqTitle">Questions fréquentes</h2>
+            <p class="section-lead" data-i18n="faqLead">
+              Tout ce que vous devez savoir sur l'utilisation de CheckRisk
+            </p>
+          </div>
+          <div class="faq">
+            <div class="faq-item">
+              <h3 class="faq-question" data-i18n="faq1Q">Ai-je besoin d'un compte personnel CanRisk pour utiliser CheckRisk ?</h3>
+              <p class="faq-answer" data-i18n="faq1A">
+                Oui, un compte CanRisk est nécessaire pour utiliser CheckRisk. CheckRisk fonctionne en intégration 
+                avec votre compte CanRisk pour générer automatiquement les fichiers d'export au format BOADICEA v6 
+                et effectuer les calculs de risque. Vous devez vous connecter avec vos identifiants CanRisk pour 
+                accéder à la plateforme et utiliser toutes les fonctionnalités.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question" data-i18n="faq2Q">Comment utiliser les fichiers générés par CheckRisk ?</h3>
+              <p class="faq-answer" data-i18n="faq2A">
+                Une fois connecté à votre compte CanRisk, CheckRisk génère automatiquement les fichiers d'export 
+                au format standard CanRisk (BOADICEA v6) ou IBIS (Tyrer-Cuzick). Les fichiers sont directement 
+                disponibles dans votre compte CanRisk et peuvent être utilisés pour les calculs de risque. 
+                Vous pouvez également les télécharger pour une utilisation dans IBIS ou d'autres outils compatibles. 
+                Les fichiers sont prêts à l'emploi et ne nécessitent aucune modification manuelle.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question" data-i18n="faq3Q">CheckRisk remplace-t-il CanRisk ou IBIS ?</h3>
+              <p class="faq-answer" data-i18n="faq3A">
+                Non, CheckRisk est un assistant intelligent qui s'intègre avec CanRisk. Il optimise la collecte 
+                et la préparation des données grâce à l'IA, puis utilise votre compte CanRisk pour effectuer les 
+                calculs de risque. CheckRisk ne remplace pas CanRisk, mais améliore significativement l'expérience 
+                de collecte de données et génère automatiquement les fichiers nécessaires pour les calculs dans CanRisk.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question" data-i18n="faq4Q">Combien de temps prend l'évaluation complète ?</h3>
+              <p class="faq-answer" data-i18n="faq4A">
+                L'évaluation complète prend généralement 15-20 minutes. L'assistant IA guide la collecte 
+                étape par étape, avec des explications contextuelles pour faciliter la compréhension. 
+                La génération des fichiers d'export est instantanée une fois les données collectées.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question" data-i18n="faq5Q">Les données sont-elles sécurisées ?</h3>
+              <p class="faq-answer" data-i18n="faq5A">
+                Oui, CheckRisk est conçu avec la sécurité et la confidentialité des données médicales en priorité. 
+                La plateforme respecte les standards de sécurité des données de santé et peut être déployée 
+                dans des environnements conformes (RGPD, HIPAA selon la juridiction). Les données peuvent être 
+                stockées localement ou dans un cloud sécurisé selon vos besoins.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question" data-i18n="faq6Q">Puis-je utiliser CheckRisk sans connexion internet ?</h3>
+              <p class="faq-answer" data-i18n="faq6A">
+                CheckRisk nécessite une connexion internet pour accéder à l'assistant IA et à la base de 
+                connaissances RAG. Cependant, une fois les fichiers générés, vous pouvez les télécharger 
+                et les utiliser hors ligne dans CanRisk ou IBIS.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question" data-i18n="faq7Q">CheckRisk fournit-il un diagnostic médical ?</h3>
+              <p class="faq-answer" data-i18n="faq7A">
+                Non, CheckRisk ne fournit pas de diagnostic médical. C'est un outil d'assistance pour la 
+                collecte de données et la génération de fichiers d'export. Les recommandations de risk 
+                management sont basées sur les guidelines internationales et doivent toujours être interprétées 
+                par un professionnel de santé qualifié dans le contexte clinique de chaque patiente.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-question" data-i18n="faq8Q">Quels formats d'export sont disponibles ?</h3>
+              <p class="faq-answer" data-i18n="faq8A">
+                CheckRisk génère des fichiers au format CanRisk (BOADICEA v6) et IBIS (Tyrer-Cuzick). 
+                Les fichiers sont au format texte (.txt) avec une structure tabulée standard, prêts pour 
+                importation dans les outils correspondants. Vous pouvez choisir le format souhaité lors 
+                de la génération.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- DEMO -->
+        <section id="demo">
+          <div class="section-header">
+            <h2 class="section-title" data-i18n="demoTitle">Explorez la démo</h2>
+            <p class="section-lead" data-i18n="demoLead">
+              Découvrez le workflow de collecte conversationnelle et la génération automatique d'exports
+            </p>
+          </div>
+          <div style="background: white; border-radius: 16px; padding: 24px; border: 1px solid var(--border-subtle); margin-top: 40px; box-shadow: var(--shadow-soft);">
+            <iframe 
+              src="https://mammogene-frontend-fuld.onrender.com/" 
+              style="width: 100%; height: 800px; border: none; border-radius: 12px;"
+              title="Démo CheckRisk"
+              allow="fullscreen"
+              loading="lazy">
+            </iframe>
+            <p style="text-align: center; margin-top: 16px; color: var(--text-muted); font-size: 13px;">
+              <em>Note: L'application s'affiche directement depuis le serveur source.</em>
+            </p>
+          </div>
+        </section>
+
+        <!-- DISCLAIMER -->
+        <div class="disclaimer">
+          <p class="disclaimer-label" data-i18n="disclaimerLabel">Avertissement important</p>
+          <p class="disclaimer-text" data-i18n="disclaimerText">
+            Cette application ne fournit pas de diagnostic médical. Elle est conçue pour soutenir 
+            l'évaluation du risque de cancer du sein et faciliter les discussions éclairées avec les 
+            professionnels de santé. Tout déploiement de CheckRisk doit respecter la réglementation, 
+            l'éthique et la gouvernance clinique applicables dans la juridiction concernée.
+          </p>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer-inner">
+          <div class="footer-logo">CheckRisk</div>
+          <p class="footer-tagline" data-i18n="footerTagline">
+            Assistant IA pour l'évaluation du risque de cancer du sein basé sur MedGemma-27B et CanRisk/IBIS
+          </p>
+          <nav class="footer-nav">
+            <a href="#objectives" class="footer-link" data-i18n="footerLink1">Objectifs</a>
+            <a href="#solution" class="footer-link" data-i18n="footerLink2">Fonctionnement</a>
+            <a href="#faq" class="footer-link" data-i18n="footerLink3">FAQ</a>
+            <a href="#demo" class="footer-link" data-i18n="footerLink4">Démo</a>
+            <a href="#contact" class="footer-link" data-i18n="footerLink5">Contact</a>
+          </nav>
+          <div class="footer-legal" id="legal">
+            <p data-i18n="footerLegal">
+              Cette application ne fournit pas de diagnostic médical. Elle est conçue pour soutenir 
+              l'évaluation du risque de cancer du sein et faciliter les discussions éclairées avec 
+              les professionnels de santé.
+            </p>
+            <p style="margin-top: 16px; font-size: 12px; color: var(--text-muted);" data-i18n="footerCopyright">
+              &copy; 2025 CheckRisk. Tous droits réservés.
+            </p>
+          </div>
+          <div class="footer-contact" id="contact">
+            <p>
+              <span data-i18n="footerContact">Pour discuter de pilotes, partenariats ou investissement, veuillez contacter</span>
+              <a href="mailto:contact@checkrisk.health">contact@checkrisk.health</a>
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Translations
+      const translations = {
+        fr: {
+          title: "CheckRisk – Assistant IA Évaluation Risque Cancer du Sein",
+          heroBadge: "Assistant IA évaluation risque cancer du sein",
+          heroTitle: "CheckRisk",
+          heroSubtitle: "Assistant intelligent pour la collecte structurée d'informations cliniques, intégré avec CanRisk pour la génération automatique de fichiers et le calcul de risque. Connexion avec votre compte CanRisk requise.",
+          btnDemo: "Tester la démo",
+          btnRequestDemo: "Demander une démo",
+          objectivesTitle: "Objectifs du projet",
+          objectivesLead: "Développer un assistant intelligent basé sur MedGemma-27B pour optimiser l'évaluation du risque de cancer du sein",
+          obj1Title: "Collecte structurée",
+          obj1Text: "Questions guidées pour recueillir les antécédents personnels et familiaux nécessaires à l'évaluation du risque",
+          obj2Title: "Explications contextuelles",
+          obj2Text: "Clarification des concepts médicaux (péri-ménopause, hyperplasie atypique, etc.) pour faciliter la compréhension",
+          obj3Title: "Génération de pedigree",
+          obj3Text: "Parser les antécédents familiaux et générer un arbre généalogique structuré sur 3-4 générations",
+          obj4Title: "Export CanRisk/IBIS",
+          obj4Text: "Génération automatique de fichiers texte formatés pour intégration dans les outils de calcul de risque (BOADICEA v6, Tyrer-Cuzick)",
+          obj5Title: "Support médecin",
+          obj5Text: "Recommandations de risk management basées sur les scores (surveillance, tests génétiques, chimioprévention)",
+          obj6Title: "Explications génétiques",
+          obj6Text: "Interprétation des résultats de tests génétiques (gènes pénétrance, PRS, VUS) pour les patientes et conseillers génétiques",
+          solutionTitle: "Comment ça fonctionne",
+          solutionLead: "Workflow en 5 phases pour une évaluation complète du risque",
+          step1Title: "Collecte des informations patiente",
+          step1Text: "L'assistant IA guide la collecte des données personnelles (âge, ménarche, ménopause, grossesses, biopsies, IMC) avec des explications contextuelles des concepts médicaux. Génération d'un JSON structuré validé.",
+          step2Title: "Antécédents familiaux et pedigree",
+          step2Text: "Collecte systématique des antécédents familiaux sur 3-4 générations (cancers, âges, liens de parenté) avec validation de cohérence. Génération automatique d'un pedigree structuré.",
+          step3Title: "Export CanRisk/IBIS automatique",
+          step3Text: "Connexion à votre compte CanRisk pour génération automatique de fichiers d'export au format BOADICEA v6 (CanRisk) ou CSV Tyrer-Cuzick (IBIS). Les fichiers sont directement disponibles dans votre compte et prêts pour les calculs de risque.",
+          step4Title: "Support risk management",
+          step4Text: "Recommandations personnalisées basées sur les guidelines (NCCN, ESMO, ACOG) : catégorisation du risque, protocoles de surveillance (mammo/IRM), indications de tests génétiques, chimioprévention.",
+          step5Title: "Explications génétiques",
+          step5Text: "Interprétation accessible des résultats de tests génétiques : pénétrance (BRCA1/2, gènes modérés), types de variants (pathogène, VUS, bénin), PRS, implications familiales.",
+          benefitsTitle: "Pour qui ?",
+          benefitsLead: "Conçu pour optimiser les workflows des professionnels de santé",
+          card1Title: "Gynécologues & Oncologues",
+          card1Text: "Réduction de 40% du temps de collecte, recommandations basées sur les guidelines, export direct CanRisk/IBIS via votre compte CanRisk pour intégration immédiate.",
+          card2Title: "Conseillers génétiques",
+          card2Text: "Pedigree structuré automatique, explications génétiques accessibles, base de connaissances RAG biomédicale contextuelle.",
+          card3Title: "Chercheurs & Programmes",
+          card3Text: "Collecte standardisée et auditable, validation continue avec métriques médicales, architecture scalable pour intégration EHRs.",
+          faqTitle: "Questions fréquentes",
+          faqLead: "Tout ce que vous devez savoir sur l'utilisation de CheckRisk",
+          faq1Q: "Ai-je besoin d'un compte personnel CanRisk pour utiliser CheckRisk ?",
+          faq1A: "Oui, un compte CanRisk est nécessaire pour utiliser CheckRisk. CheckRisk fonctionne en intégration avec votre compte CanRisk pour générer automatiquement les fichiers d'export au format BOADICEA v6 et effectuer les calculs de risque. Vous devez vous connecter avec vos identifiants CanRisk pour accéder à la plateforme et utiliser toutes les fonctionnalités.",
+          faq2Q: "Comment utiliser les fichiers générés par CheckRisk ?",
+          faq2A: "Une fois connecté à votre compte CanRisk, CheckRisk génère automatiquement les fichiers d'export au format standard CanRisk (BOADICEA v6) ou IBIS (Tyrer-Cuzick). Les fichiers sont directement disponibles dans votre compte CanRisk et peuvent être utilisés pour les calculs de risque. Vous pouvez également les télécharger pour une utilisation dans IBIS ou d'autres outils compatibles. Les fichiers sont prêts à l'emploi et ne nécessitent aucune modification manuelle.",
+          faq3Q: "CheckRisk remplace-t-il CanRisk ou IBIS ?",
+          faq3A: "Non, CheckRisk est un assistant intelligent qui s'intègre avec CanRisk. Il optimise la collecte et la préparation des données grâce à l'IA, puis utilise votre compte CanRisk pour effectuer les calculs de risque. CheckRisk ne remplace pas CanRisk, mais améliore significativement l'expérience de collecte de données et génère automatiquement les fichiers nécessaires pour les calculs dans CanRisk.",
+          faq4Q: "Combien de temps prend l'évaluation complète ?",
+          faq4A: "L'évaluation complète prend généralement 15-20 minutes. L'assistant IA guide la collecte étape par étape, avec des explications contextuelles pour faciliter la compréhension. La génération des fichiers d'export est instantanée une fois les données collectées.",
+          faq5Q: "Les données sont-elles sécurisées ?",
+          faq5A: "Oui, CheckRisk est conçu avec la sécurité et la confidentialité des données médicales en priorité. La plateforme respecte les standards de sécurité des données de santé et peut être déployée dans des environnements conformes (RGPD, HIPAA selon la juridiction). Les données peuvent être stockées localement ou dans un cloud sécurisé selon vos besoins.",
+          faq6Q: "Puis-je utiliser CheckRisk sans connexion internet ?",
+          faq6A: "CheckRisk nécessite une connexion internet pour accéder à l'assistant IA et à la base de connaissances RAG. Cependant, une fois les fichiers générés, vous pouvez les télécharger et les utiliser hors ligne dans CanRisk ou IBIS.",
+          faq7Q: "CheckRisk fournit-il un diagnostic médical ?",
+          faq7A: "Non, CheckRisk ne fournit pas de diagnostic médical. C'est un outil d'assistance pour la collecte de données et la génération de fichiers d'export. Les recommandations de risk management sont basées sur les guidelines internationales et doivent toujours être interprétées par un professionnel de santé qualifié dans le contexte clinique de chaque patiente.",
+          faq8Q: "Quels formats d'export sont disponibles ?",
+          faq8A: "CheckRisk génère des fichiers au format CanRisk (BOADICEA v6) et IBIS (Tyrer-Cuzick). Les fichiers sont au format texte (.txt) avec une structure tabulée standard, prêts pour importation dans les outils correspondants. Vous pouvez choisir le format souhaité lors de la génération.",
+          demoTitle: "Explorez la démo",
+          demoLead: "Découvrez le workflow de collecte conversationnelle et la génération automatique d'exports",
+          demoText: "Intégrez ici votre démo interactive, prototype ou visite guidée pour présenter le questionnaire conversationnel et la génération de fichiers CanRisk/IBIS.",
+          disclaimerLabel: "Avertissement important",
+          disclaimerText: "Cette application ne fournit pas de diagnostic médical. Elle est conçue pour soutenir l'évaluation du risque de cancer du sein et faciliter les discussions éclairées avec les professionnels de santé. Tout déploiement de CheckRisk doit respecter la réglementation, l'éthique et la gouvernance clinique applicables dans la juridiction concernée.",
+          footerTagline: "Assistant IA pour l'évaluation du risque de cancer du sein basé sur MedGemma-27B et CanRisk/IBIS",
+          footerLink1: "Objectifs",
+          footerLink2: "Fonctionnement",
+          footerLink3: "FAQ",
+          footerLink4: "Démo",
+          footerLink5: "Contact",
+          footerLegal: "Cette application ne fournit pas de diagnostic médical. Elle est conçue pour soutenir l'évaluation du risque de cancer du sein et faciliter les discussions éclairées avec les professionnels de santé.",
+          footerCopyright: "© 2025 CheckRisk. Tous droits réservés.",
+          footerContact: "Pour discuter de pilotes, partenariats ou investissement, veuillez contacter"
+        },
+        en: {
+          title: "CheckRisk – AI Assistant for Breast Cancer Risk Assessment",
+          heroBadge: "AI Assistant for breast cancer risk assessment",
+          heroTitle: "CheckRisk",
+          heroSubtitle: "Intelligent assistant for structured collection of clinical information, integrated with CanRisk for automatic file generation and risk calculation. CanRisk account connection required.",
+          btnDemo: "Try the demo",
+          btnRequestDemo: "Request a demo",
+          objectivesTitle: "Project Objectives",
+          objectivesLead: "Develop an intelligent assistant based on MedGemma-27B to optimize breast cancer risk assessment",
+          obj1Title: "Structured collection",
+          obj1Text: "Guided questions to collect personal and family history necessary for risk assessment",
+          obj2Title: "Contextual explanations",
+          obj2Text: "Clarification of medical concepts (perimenopause, atypical hyperplasia, etc.) to facilitate understanding",
+          obj3Title: "Pedigree generation",
+          obj3Text: "Parse family history and generate a structured family tree over 3-4 generations",
+          obj4Title: "CanRisk/IBIS export",
+          obj4Text: "Automatic generation of formatted text files for integration into risk calculation tools (BOADICEA v6, Tyrer-Cuzick)",
+          obj5Title: "Physician support",
+          obj5Text: "Risk management recommendations based on scores (surveillance, genetic testing, chemoprevention)",
+          obj6Title: "Genetic explanations",
+          obj6Text: "Interpretation of genetic test results (penetrance genes, PRS, VUS) for patients and genetic counselors",
+          solutionTitle: "How it works",
+          solutionLead: "5-phase workflow for comprehensive risk assessment",
+          step1Title: "Patient information collection",
+          step1Text: "The AI assistant guides the collection of personal data (age, menarche, menopause, pregnancies, biopsies, BMI) with contextual explanations of medical concepts. Generation of validated structured JSON.",
+          step2Title: "Family history and pedigree",
+          step2Text: "Systematic collection of family history over 3-4 generations (cancers, ages, relationships) with consistency validation. Automatic generation of a structured pedigree.",
+          step3Title: "Automatic CanRisk/IBIS export",
+          step3Text: "Connection to your CanRisk account for automatic generation of export files in BOADICEA v6 (CanRisk) or Tyrer-Cuzick CSV (IBIS) format. Files are directly available in your account and ready for risk calculations.",
+          step4Title: "Risk management support",
+          step4Text: "Personalized recommendations based on guidelines (NCCN, ESMO, ACOG): risk categorization, surveillance protocols (mammo/MRI), genetic testing indications, chemoprevention.",
+          step5Title: "Genetic explanations",
+          step5Text: "Accessible interpretation of genetic test results: penetrance (BRCA1/2, moderate genes), variant types (pathogenic, VUS, benign), PRS, family implications.",
+          benefitsTitle: "For whom?",
+          benefitsLead: "Designed to optimize healthcare professional workflows",
+          card1Title: "Gynecologists & Oncologists",
+          card1Text: "40% reduction in collection time, guideline-based recommendations, direct CanRisk/IBIS export via your CanRisk account for immediate integration.",
+          card2Title: "Genetic counselors",
+          card2Text: "Automatic structured pedigree, accessible genetic explanations, contextual biomedical RAG knowledge base.",
+          card3Title: "Researchers & Programs",
+          card3Text: "Standardized and auditable collection, continuous validation with medical metrics, scalable architecture for EHR integration.",
+          faqTitle: "Frequently Asked Questions",
+          faqLead: "Everything you need to know about using CheckRisk",
+          faq1Q: "Do I need a personal CanRisk account to use CheckRisk?",
+          faq1A: "Yes, a CanRisk account is required to use CheckRisk. CheckRisk works in integration with your CanRisk account to automatically generate export files in BOADICEA v6 format and perform risk calculations. You must log in with your CanRisk credentials to access the platform and use all features.",
+          faq2Q: "How do I use the files generated by CheckRisk?",
+          faq2A: "Once connected to your CanRisk account, CheckRisk automatically generates export files in standard CanRisk (BOADICEA v6) or IBIS (Tyrer-Cuzick) format. Files are directly available in your CanRisk account and can be used for risk calculations. You can also download them for use in IBIS or other compatible tools. Files are ready to use and require no manual modification.",
+          faq3Q: "Does CheckRisk replace CanRisk or IBIS?",
+          faq3A: "No, CheckRisk is an intelligent assistant that integrates with CanRisk. It optimizes data collection and preparation through AI, then uses your CanRisk account to perform risk calculations. CheckRisk does not replace CanRisk, but significantly improves the data collection experience and automatically generates the files needed for calculations in CanRisk.",
+          faq4Q: "How long does the complete assessment take?",
+          faq4A: "The complete assessment typically takes 15-20 minutes. The AI assistant guides collection step by step, with contextual explanations to facilitate understanding. Export file generation is instantaneous once data is collected.",
+          faq5Q: "Is the data secure?",
+          faq5A: "Yes, CheckRisk is designed with medical data security and confidentiality as a priority. The platform complies with health data security standards and can be deployed in compliant environments (GDPR, HIPAA depending on jurisdiction). Data can be stored locally or in a secure cloud according to your needs.",
+          faq6Q: "Can I use CheckRisk without an internet connection?",
+          faq6A: "CheckRisk requires an internet connection to access the AI assistant and RAG knowledge base. However, once files are generated, you can download them and use them offline in CanRisk or IBIS.",
+          faq7Q: "Does CheckRisk provide medical diagnosis?",
+          faq7A: "No, CheckRisk does not provide medical diagnosis. It is an assistance tool for data collection and export file generation. Risk management recommendations are based on international guidelines and must always be interpreted by a qualified healthcare professional in the clinical context of each patient.",
+          faq8Q: "What export formats are available?",
+          faq8A: "CheckRisk generates files in CanRisk (BOADICEA v6) and IBIS (Tyrer-Cuzick) formats. Files are in text format (.txt) with standard tabulated structure, ready for import into corresponding tools. You can choose the desired format during generation.",
+          demoTitle: "Explore the demo",
+          demoLead: "Discover the conversational collection workflow and automatic export generation",
+          demoText: "Integrate your interactive demo, prototype or guided tour here to present the conversational questionnaire and CanRisk/IBIS file generation.",
+          disclaimerLabel: "Important disclaimer",
+          disclaimerText: "This application does not provide medical diagnosis. It is designed to support breast cancer risk assessment and facilitate informed discussions with healthcare professionals. Any deployment of CheckRisk must comply with applicable regulations, ethics and clinical governance in the relevant jurisdiction.",
+          footerTagline: "AI Assistant for breast cancer risk assessment based on MedGemma-27B and CanRisk/IBIS",
+          footerLink1: "Objectives",
+          footerLink2: "How it works",
+          footerLink3: "FAQ",
+          footerLink4: "Demo",
+          footerLink5: "Contact",
+          footerLegal: "This application does not provide medical diagnosis. It is designed to support breast cancer risk assessment and facilitate informed discussions with healthcare professionals.",
+          footerCopyright: "© 2025 CheckRisk. All rights reserved.",
+          footerContact: "To discuss pilots, partnerships or investment, please contact"
+        }
+      };
+
+      // Get saved language or default to French
+      let currentLang = localStorage.getItem('lang') || 'fr';
+
+      // Function to change language
+      function changeLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('lang', lang);
+        
+        // Update HTML lang attribute
+        document.documentElement.lang = lang;
+        
+        // Update title
+        document.title = translations[lang].title;
+        
+        // Update all elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (translations[lang][key]) {
+            el.textContent = translations[lang][key];
+          }
+        });
+        
+        // Update elements with data-i18n-html for HTML content
+        document.querySelectorAll('[data-i18n-html]').forEach(el => {
+          const key = el.getAttribute('data-i18n-html');
+          if (translations[lang][key]) {
+            el.innerHTML = translations[lang][key];
+          }
+        });
+        
+        // Update language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+        });
+      }
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if (href !== '#' && href !== '') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          }
+        });
+      });
+
+      // Initialize language on page load
+      document.addEventListener('DOMContentLoaded', () => {
+        changeLanguage(currentLang);
+        
+        // Add click handlers to language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            changeLanguage(btn.getAttribute('data-lang'));
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
